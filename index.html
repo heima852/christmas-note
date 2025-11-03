@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+ <html lang="zh-CN">
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>圣诞表白便签</title>
+     <style>
+         * {
+             margin: 0;
+             padding: 0;
+             box-sizing: border-box;
+             font-family: 'Arial', sans-serif;
+         }
+         body {
+             height: 100vh;
+             background: #fff; /* 主题背景改为白色 */
+             overflow: hidden;
+             cursor: pointer;
+         }
+         .note {
+             position: absolute;
+             padding: 12px 20px;
+             border-radius: 8px;
+             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+             transform: scale(0);
+             transition: transform 0.3s ease, opacity 0.5s ease;
+             opacity: 0;
+             max-width: 200px;
+             word-wrap: break-word;
+             font-size: 16px;
+             color: #333;
+             border-left: 4px solid #ff6b6b;
+         }
+         .note.show {
+             transform: scale(1);
+             opacity: 1;
+         }
+         .click-hint {
+             position: absolute;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+             color: #333; /* 提示文字改为深色，适配白色背景 */
+             font-size: 24px;
+             text-shadow: 0 2px 8px rgba(0,0,0,0.1);
+             transition: opacity 0.5s ease;
+         }
+         .click-hint.hide {
+             opacity: 0;
+         }
+     </style>
+ </head>
+ <body>
+     <div class="click-hint">点击屏幕，接收圣诞祝福呀～</div>
+     <script>
+         // 50条圣诞表白祝福文案
+         const notesText = [
+             "圣诞快乐，我的宝贝",
+             "记得按时吃饭，别饿坏啦",
+             "天气冷了，多穿件衣服",
+             "每时每刻，我都很想你",
+             "好好爱自己，我会心疼的",
+             "圣诞美好，有你更甜",
+             "愿你圣诞被温柔包围",
+             "早餐一定要吃，别偷懒",
+             "晚上盖好被子，别着凉",
+             "你的笑容，是我的圣诞礼物",
+             "想和你一起过每个圣诞",
+             "照顾好自己，等我见面",
+             "圣诞安康，万事顺意",
+             "多喝热水，暖身也暖心",
+             "我对你的爱，不止圣诞",
+             "愿你每天都像圣诞一样快乐",
+             "工作再忙，也要休息呀",
+             "天冷记得戴围巾，超暖的",
+             "思念如星，圣诞为你点亮",
+             "好好吃饭，好好睡觉，好好想我",
+             "圣诞快乐，爱你不止三千遍",
+             "别熬夜啦，早点休息呀",
+             "寒风再冷，有我的牵挂暖你",
+             "愿你圣诞被幸福填满",
+             "我想你了，很想很想",
+             "记得吃点甜的，心情会更好",
+             "圣诞有你，便是圆满",
+             "照顾好身体，比什么都重要",
+             "我的祝福，随圣诞而来",
+             "愿你永远被爱包围",
+             "天气转凉，注意保暖哦",
+             "圣诞快乐，平安喜乐",
+             "想和你一起看圣诞雪",
+             "别太累啦，适当放松自己",
+             "你是我最珍贵的圣诞礼物",
+             "记得补充维生素，身体棒棒",
+             "圣诞美好，与你共度",
+             "我会一直陪着你，不离不弃",
+             "天冷多喝热饮，暖暖胃",
+             "愿你圣诞无烦恼，全是美好",
+             "吃饭别挑食，营养要均衡",
+             "我对你的思念，跨越山海",
+             "圣诞快乐，喜乐常伴",
+             "出门记得带伞，以防变天",
+             "你一笑，整个圣诞都亮了",
+             "好好爱自己，我来爱你",
+             "圣诞安康，福寿绵长",
+             "想牵着你的手，走过每个圣诞",
+             "记得好好休息，别透支身体",
+             "圣诞快乐，我的全世界"
+         ];
+         const body = document.body;
+         const hint = document.querySelector('.click-hint');
+         let isClicked = false;
+         // 便签随机背景色（圣诞氛围柔和色系）
+         const noteBgColors = [
+             '#fff3cd', '#ffeeba', '#ffd93d', '#fff8e1', '#fcf1f7', '#fce4ec',
+             '#e8f5e9', '#c8e6c9', '#a5d6a7', '#e0f7fa', '#b2ebf2', '#80deea',
+             '#f3e5f5', '#e1bee7', '#ce93d8', '#ffe0b2', '#ffcc80', '#ffb74d'
+         ];
+         // 点击屏幕触发便签弹出
+         body.addEventListener('click', () => {
+             if (isClicked) return;
+             isClicked = true;
+             hint.classList.add('hide');
+             
+             // 依次弹出便签，间隔100ms
+             notesText.forEach((text, index) => {
+                 setTimeout(() => {
+                     createNote(text);
+                 }, index * 100);
+             });
+         });
+         // 创建便签元素
+         function createNote(text) {
+             const note = document.createElement('div');
+             note.className = 'note';
+             note.textContent = text;
+             
+             // 随机位置（避免超出屏幕）
+             const maxX = window.innerWidth - 220;
+             const maxY = window.innerHeight - 60;
+             const x = Math.random() * maxX;
+             const y = Math.random() * maxY;
+             
+             note.style.left = `${x}px`;
+             note.style.top = `${y}px`;
+             
+             // 随机便签背景色 + 随机边框色
+             const randomBg = noteBgColors[Math.floor(Math.random() * noteBgColors.length)];
+             const borderColors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3'];
+             note.style.backgroundColor = randomBg;
+             note.style.borderLeftColor = borderColors[Math.floor(Math.random() * borderColors.length)];
+             
+             body.appendChild(note);
+             
+             // 延迟显示，实现弹出动画
+             setTimeout(() => {
+                 note.classList.add('show');
+             }, 50);
+             // 10秒后自动淡出（避免页面拥挤）
+  setTimeout(() => {
+                 note.classList.remove('show');
+                 setTimeout(() => {
+                     body.removeChild(note);
+                 }, 500);
+             }, 10000);
+         }
+     </script>
+ </body>
+ </html>
